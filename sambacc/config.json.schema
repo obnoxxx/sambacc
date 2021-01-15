@@ -1,0 +1,138 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "mailto:phlogistonjohn+sambacc-0@asynchrono.us",
+  "title": "sambacc configuration",
+  "$comment": "ingore anything starting with an underscore",
+  "definitions": {
+    "options": {
+      "description": "JSON key-value mapping of smb.conf options",
+      "$id": "#options",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "samba-container-config": {
+      "type": "string",
+      "description": "version string"
+    },
+    "configs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "shares": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1,
+            "uniqeItems": true
+          },
+          "globals": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1,
+            "uniqeItems": true
+          },
+          "instance_name": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "shares": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "options": {
+            "description": "JSON key-value mapping of smb.conf options",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "globals": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "options": {
+            "description": "JSON key-value mapping of smb.conf options",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "users": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "uid": {
+              "type": "number"
+            },
+            "gid": {
+              "type": "number"
+            },
+            "password": {
+              "type": "string"
+            },
+            "nt_hash": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "groups": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "gid": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  },
+  "patternProperties": {
+    "^_": true
+  },
+  "additionalProperties": false,
+  "required": [
+    "samba-container-config"
+  ]
+}

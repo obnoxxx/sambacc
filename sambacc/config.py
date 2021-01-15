@@ -19,8 +19,22 @@
 import binascii
 import errno
 import json
+import pkg_resources
+
+import jsonschema
+
 
 _VALID_VERSIONS = ["v0"]
+_JSON_SCHEMA = None
+
+
+def _schema():
+    global _JSON_SCHEMA
+    if _JSON_SCHEMA is None:
+        sstream = pkg_resources.resource_stream(__name__, "config.json.schema")
+        _JSON_SCHEMA = json.load(sstream)
+    return _JSON_SCHEMA
+
 
 # alias open to _open to support test assertions when running
 # as UID 0
@@ -55,7 +69,7 @@ def read_config_files(fnames):
     return gconfig
 
 
-def check_config_data(data):
+def check_config_data(data, validate=True):
     """Return the config data or raise a ValueError if the config
     is invalid or incomplete.
     """
@@ -65,6 +79,8 @@ def check_config_data(data):
         raise ValueError("Invalid config: no samba-container-config key")
     elif version not in _VALID_VERSIONS:
         raise ValueError(f"Invalid config: unknown version {version}")
+    if validate:
+        jsonschema.validate(instance=data, schema=_schema())
     return data
 
 
