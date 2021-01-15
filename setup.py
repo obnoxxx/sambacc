@@ -12,6 +12,7 @@ setup(
     entry_points={
         "console_scripts": ["samba-container=sambacc.main:main"],
     },
+    package_data={"": ["*.json.schema"]},
     data_files=[
         (
             "share/sambacc/examples",
